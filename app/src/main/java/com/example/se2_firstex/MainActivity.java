@@ -8,15 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public TextView textView;
     public TextView serverReply;
-    public Button button;
-    public static EditText sendMessage;
+    public Button calculateButton;
+    public Button serverButton;
+    public EditText sendMessage;
     static String input = null;
     static String output = "0";
+    PrimeThread primeThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,26 +26,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         textView = (TextView) findViewById(R.id.textView);
         serverReply = (TextView) findViewById(R.id.textView2);
-        button = (Button) findViewById(R.id.button);
+        calculateButton = (Button) findViewById(R.id.calculateButton);
+        serverButton = (Button) findViewById(R.id.serverButton);
         sendMessage = (EditText) findViewById(R.id.editTextNumber);
-        button.setOnClickListener(this);
+        calculateButton.setOnClickListener(this);
+        serverButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button:
+            case R.id.calculateButton:
                 try {
                     calculate();
                     serverReply.setText(output);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
         }
+        switch (v.getId()) {
+            case R.id.serverButton:
+                primeThread = new PrimeThread(sendMessage.getText().toString());
+                primeThread.start();
+                try {
+                    primeThread.join();
+                    serverReply.setText(primeThread.getModifiedSentence());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+        }
     }
 
-    private String calculate() throws IOException {
+    private String calculate() {
         input = sendMessage.getText().toString();
         char[] chars = input.toCharArray();
         for (int i = 1; i < input.length(); i += 2) {
