@@ -15,9 +15,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button calculateButton;
     public Button serverButton;
     public EditText sendMessage;
-    static String input = null;
-    static String output = "0";
+
     PrimeThread primeThread;
+    ReplaceInputToASCII replaceInputToASCII;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.calculateButton:
                 try {
-                    calculate();
-                    serverReply.setText(output);
+                    replaceInputToASCII= new ReplaceInputToASCII(sendMessage.getText().toString());
+                    serverReply.setText(replaceInputToASCII.calculate());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -60,19 +60,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private String calculate() {
-        input = sendMessage.getText().toString();
-        char[] chars = input.toCharArray();
-        for (int i = 1; i < input.length(); i += 2) {
-            if (chars[i] == '0') {
-                chars[i] = 'j';
-            } else {
-                int c = (int) chars[i] + 48;
-                char ascii = (char) c;
-                chars[i] = ascii;
-            }
-        }
-        output = new String(chars);
-        return output;
-    }
+
 }

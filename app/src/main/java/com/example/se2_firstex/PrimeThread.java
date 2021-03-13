@@ -18,7 +18,6 @@ public class PrimeThread extends Thread {
     public String getMinPrime() {
         return minPrime;
     }
-
     public void setMinPrime(String minPrime) {
         this.minPrime = minPrime;
     }
@@ -26,10 +25,7 @@ public class PrimeThread extends Thread {
     public String getModifiedSentence() {
         return modifiedSentence;
     }
-
-    public void setModifiedSentence(String modifiedSentence) {
-        this.modifiedSentence = modifiedSentence;
-    }
+    public void setModifiedSentence(String modifiedSentence) { this.modifiedSentence = modifiedSentence; }
 
 
     public void run() {
